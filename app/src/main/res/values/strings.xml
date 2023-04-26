@@ -4,4 +4,13 @@
     <!---TOKEN -->
     <string name="TOKEN_FILENAME">token</string>
 
+    <!---STRINGHE NFC SCAN -->
+    <string name="TITLE_FREE">Stai per occupare un ombrellone.</string>
+    <string name="TITLE_OCCUPIED">Stai per liberare il tuo ombrellone.</string>
+
+    <string name="OMBRELLONE">Ombrellone Numero: </string>
+
+    <string name="BUTTON_FREE">Prenota</string>
+    <string name="BUTTON_OCCUPIED">Libera</string>
+
 </resources>

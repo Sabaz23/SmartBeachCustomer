@@ -28,6 +28,9 @@ public class Utils {
 
     private static String UpdateTokenUrl = "http://192.168.1.186/umbrellaapp/elaborateReservation.php";
 
+    public static boolean IsTokenEmpty(){
+        return Token.equals("");
+    }
     public static boolean CreateToken(int uid, Context ctx){
         String AlphaNumericStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvxyz0123456789";
         StringBuilder s = new StringBuilder(TokenLength);
@@ -90,5 +93,8 @@ public class Utils {
             return false;
         }
 
+
     }
+
 }
+
