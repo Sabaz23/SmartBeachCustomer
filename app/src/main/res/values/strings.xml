@@ -10,6 +10,10 @@
 
     <string name="OMBRELLONE">Ombrellone Numero: </string>
 
+    <string name="INIZIOPRENOTAZIONE">Inizio prenotazione: </string>
+
+    <string name="FINEPRENOTAZIONE">Fine prenotazione: </string>
+
     <string name="BUTTON_FREE">Prenota</string>
     <string name="BUTTON_OCCUPIED">Libera</string>
 
