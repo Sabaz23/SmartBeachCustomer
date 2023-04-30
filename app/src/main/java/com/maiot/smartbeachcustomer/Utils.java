@@ -18,10 +18,14 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoField;
 import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
@@ -35,20 +39,25 @@ public class Utils {
 
     private static final String TAG = "Utils";
 
-    public static String ServerUrl = "http://192.168.1.186/";
+    public static String ServerUrl = "http://192.168.1.10/";
 
-    private static String UpdateTokenUrl = "http://192.168.1.186/umbrellaapp/elaborateReservation.php";
+    private static String UpdateTokenUrl = "http://192.168.1.10/umbrellapp/elaborateReservation.php";
 
-    private static String GetTokenUrl = "http://192.168.1.186/umbrellaapp/getToken.php";
+    private static String GetTokenUrl = "http://192.168.1.10/umbrellapp/getToken.php";
 
     private static final float PrezzoAlMinuto = 0.07f;
 
-    public float getPrezzoAlMinuto() {return PrezzoAlMinuto;}
+    public static float getPrezzoAlMinuto() {return PrezzoAlMinuto;}
 
-    public float getPrezzoDaPagare(Calendar sd)
+    public static float getPrezzoDaPagare(Calendar sd)
     {
-        //Da fare calcolo
-        return 0;
+        Date sdDate = sd.getTime();
+        Date fdDate = Calendar.getInstance().getTime();
+        Log.i(TAG, "sdDate e fdDate " + sdDate.toString() + " " + fdDate.toString());
+        long diffInMillis = (fdDate.getTime()-sdDate.getTime())/1000;
+        long diff = TimeUnit.MINUTES.convert(diffInMillis,TimeUnit.MILLISECONDS);
+
+        return diff * PrezzoAlMinuto;
     }
 
     public static boolean IsMyToken(String tk) { return Token.equals(tk); }
@@ -100,29 +109,26 @@ public class Utils {
 
     }
 
-    public static boolean AssignToken(int uid, Context ctx){
-        if(UpdateToken(uid))
+    public static boolean AssignToken(int uid, String token, String inizioprenotazione, Context ctx){
+        if(UpdateToken(uid, token, inizioprenotazione))
         {
-            Toast.makeText(ctx,"Ombrellone prenotato!", Toast.LENGTH_LONG).show();
+            Log.i(TAG, "Update Token andato a buon fine");
             return true;
         }else{
-            Toast.makeText(ctx, "Errore nella prenotazione.", Toast.LENGTH_SHORT).show();
-            Token = "";
+            Log.i(TAG, "Update Token fallito!");
             return false;
         }
 
     }
 
-    private static boolean UpdateToken(int uid)
+    private static boolean UpdateToken(int uid, String token, String inizioprenotazione)
     {
             final OkHttpClient client = new OkHttpClient();
 
-            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-
             RequestBody formBody = new FormBody.Builder()
                     .add("uid", Integer.toString(uid))
-                    .add("token", Token)
-                    .add("inizioprenotazione", timestamp.toString())
+                    .add("token", token)
+                    .add("inizioprenotazione", inizioprenotazione)
                     .build();
 
             Request request = new Request.Builder()
@@ -165,6 +171,10 @@ public class Utils {
             Token = reader.readLine();
         }
 
+    }
+
+    public static String getToken() {
+        return Token;
     }
 }
 

@@ -7,6 +7,8 @@
     <!---STRINGHE NFC SCAN -->
     <string name="TITLE_FREE">Stai per occupare un ombrellone.</string>
     <string name="TITLE_OCCUPIED">Stai per liberare il tuo ombrellone.</string>
+    <string name="TITLE_WRONG">Questo ombrellone è già occupato.</string>
+    <string name="TITLE_NOCONN">Non puoi prenotare un ombrellone senza connessione.</string>
 
     <string name="OMBRELLONE">Ombrellone Numero: </string>
 
@@ -14,7 +16,13 @@
 
     <string name="FINEPRENOTAZIONE">Fine prenotazione: </string>
 
+    <string name="PREZZOALMINUTO">Prezzo al minuto: </string>
+
+    <string name="PREZZODAPAGARE">Prezzo da pagare: </string>
+
     <string name="BUTTON_FREE">Prenota</string>
     <string name="BUTTON_OCCUPIED">Libera</string>
+    <string name="BUTTON_WRONG">Ok</string>
+
 
 </resources>
