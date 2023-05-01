@@ -1,6 +1,7 @@
 package com.maiot.smartbeachcustomer;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -162,6 +163,7 @@ public class ReservationPage extends AppCompatActivity {
             //Se il token dell'ombrellone scannerizzato è il mio
             if (Utils.IsMyToken(RemoteToken)) {
                 tvtitle.setText(getString(R.string.TITLE_OCCUPIED));
+                tvtitle.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.green));
                 tvombrellone.setText(getString(R.string.OMBRELLONE) + " " + uid);
                 Date tmp = inizioprenotazione.getTime();
                 tvinizioprenotazione.setText(getString(R.string.INIZIOPRENOTAZIONE) + " " + sdfDisplay.format(tmp));
@@ -170,11 +172,13 @@ public class ReservationPage extends AppCompatActivity {
             } else //Se il token dell'ombrellone scannerizzato NON è il mio
             {
                 tvtitle.setText(getString(R.string.TITLE_WRONG));
+                tvtitle.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.red));
                 bttok.setText(getString(R.string.BUTTON_WRONG));
             }
         } else //Se il token è vuoto allora l'ombrellone è libero
         {
             tvtitle.setText(getString(R.string.TITLE_FREE));
+            tvtitle.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.green));
             tvombrellone.setText(getString(R.string.OMBRELLONE) + " " + uid);
             Date tmp = inizioprenotazione.getTime();
             tvinizioprenotazione.setText(getString(R.string.INIZIOPRENOTAZIONE) + " " + sdfDisplay.format(tmp));
@@ -186,6 +190,7 @@ public class ReservationPage extends AppCompatActivity {
     void SetViewsWrong()
     {
         tvtitle.setText(getString(R.string.TITLE_NOCONN));
+        tvtitle.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.red));
         bttok.setText(getString(R.string.BUTTON_WRONG));
     }
 

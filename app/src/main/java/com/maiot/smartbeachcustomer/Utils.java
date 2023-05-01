@@ -14,6 +14,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
@@ -59,8 +61,10 @@ public class Utils {
         Date fdDate = Calendar.getInstance().getTime();
         long diffInSecs = (fdDate.getTime()-sdDate.getTime())/1000;
         long diff = TimeUnit.MINUTES.convert(diffInSecs,TimeUnit.SECONDS);
-
-        return diff * PrezzoAlMinuto;
+        float prezzo = diff * PrezzoAlMinuto;
+        BigDecimal bd = new BigDecimal(Double.toString(prezzo));
+        bd = bd.setScale(2, RoundingMode.HALF_DOWN);
+        return bd.floatValue();
     }
 
     public static boolean IsMyToken(String tk) { return Token.equals(tk); }
@@ -68,8 +72,6 @@ public class Utils {
     public static String GetRemoteTokenAndDate(int uid)
     {
         final OkHttpClient client = new OkHttpClient();
-
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
         RequestBody formBody = new FormBody.Builder()
                 .add("uid", Integer.toString(uid))

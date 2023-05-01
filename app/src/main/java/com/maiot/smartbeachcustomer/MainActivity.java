@@ -22,6 +22,9 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,13 +33,14 @@ public class MainActivity extends AppCompatActivity {
     private Button bttnext;
     private int uid = 0;
 
+
     private int CurrentDisplaying = 0;
 
     private final SimpleDateFormat sdfDisplay = new SimpleDateFormat("HH:mm:ss", Locale.ITALIAN);
 
     String[] MyUmbrellas = null;
 
-    private Thread updatePrezzoThread;
+    ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
 
     private Calendar StartCalendar = Calendar.getInstance();
 
@@ -68,6 +72,8 @@ public class MainActivity extends AppCompatActivity {
         tvprezzodapagare = findViewById(R.id.tvprezzoDaPagare);
         bttnext = findViewById(R.id.bttnext);
         bttnext.setOnClickListener(bttnextlistener);
+
+
 
         Thread thr = new Thread(() -> {
             if(Utils.isConnectedToThisServer(Utils.ServerUrl,Utils.Timeout)) {
@@ -103,23 +109,14 @@ public class MainActivity extends AppCompatActivity {
         StartCalendar.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR));
         StartCalendar.set(Calendar.MONTH, Calendar.getInstance().get(Calendar.MONTH));
         StartCalendar.set(Calendar.DAY_OF_MONTH, Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
-        updatePrezzoThread = new Thread(() -> {
-            while(!updatePrezzoThread.isInterrupted()) {
-                try {
-                runOnUiThread(() -> tvprezzodapagare.setText(getString(R.string.PREZZODAPAGARE) + Utils.getPrezzoDaPagare(StartCalendar) + "€"));
-                Log.i(TAG, "Aggiorno il prezzo da pagare....");
-                Thread.sleep(60*1000);
-                } catch (InterruptedException e) {
-                }
-            }
-        });
-        updatePrezzoThread.start();
+        executor = Executors.newScheduledThreadPool(1);
+        executor.scheduleAtFixedRate(updatePrezzoRunnable,0,1, TimeUnit.MINUTES);
         if(MyUmbrellas.length == 2) bttnext.setEnabled(false);
         else bttnext.setEnabled(true);
     }
 
-    private View.OnClickListener bttnextlistener = view -> {
-        updatePrezzoThread.interrupt();
+    private final View.OnClickListener bttnextlistener = view -> {
+        executor.shutdownNow();
         if(CurrentDisplaying < MyUmbrellas.length-2) //-2 perchè uno è vuoto (l'ultimo dopo ;) e l'altro è indice 0
             CurrentDisplaying++;
         else
@@ -129,6 +126,12 @@ public class MainActivity extends AppCompatActivity {
         } catch (ParseException e) {
             Log.e(TAG,"Prolema nel parsing della data " + e.getMessage());
         }
+    };
+
+    @SuppressLint("SetTextI18n")
+    Runnable updatePrezzoRunnable = () -> {
+            runOnUiThread(() -> tvprezzodapagare.setText(getString(R.string.PREZZODAPAGARE) + Utils.getPrezzoDaPagare(StartCalendar) + "€"));
+            Log.i(TAG, "Aggiorno il prezzo da pagare....");
     };
 
 }
