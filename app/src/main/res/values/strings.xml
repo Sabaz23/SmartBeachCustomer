@@ -4,6 +4,12 @@
     <!---TOKEN -->
     <string name="TOKEN_FILENAME">token</string>
 
+    <!---HOME PAGE -->
+    <string name="TITLE_HOME_FREE">Scannerizza un ombrellone per cominciare.</string>
+    <string name="TITLE_HOME_OCCUPIED">Informazioni sul tuo ombrellone:</string>
+
+
+
     <!---STRINGHE NFC SCAN -->
     <string name="TITLE_FREE">Stai per occupare un ombrellone.</string>
     <string name="TITLE_OCCUPIED">Stai per liberare il tuo ombrellone.</string>

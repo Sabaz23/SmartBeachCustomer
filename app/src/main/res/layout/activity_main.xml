@@ -29,4 +29,37 @@
         android:textSize="15dp"
         />
 
+    <TextView
+        android:id="@+id/tvumbrellaNum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textSize="15dp"
+        />
+
+    <TextView
+        android:id="@+id/tvinizioPren"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textSize="15dp"
+        />
+
+    <TextView
+        android:id="@+id/tvprezzoDaPagare"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textSize="15dp"
+        />
+
+    <Button
+        android:id="@+id/bttnext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Successivo"
+        android:enabled="false"
+        />
+
 </LinearLayout>

@@ -39,11 +39,15 @@ public class Utils {
 
     private static final String TAG = "Utils";
 
-    public static String ServerUrl = "http://192.168.1.10/";
+    public static String ServerUrl = "http://192.168.1.5/";
 
-    private static String UpdateTokenUrl = "http://192.168.1.10/umbrellapp/elaborateReservation.php";
+    public static final int Timeout = 5000;
 
-    private static String GetTokenUrl = "http://192.168.1.10/umbrellapp/getToken.php";
+    private static String UpdateTokenUrl = ServerUrl + "umbrellapp/elaborateReservation.php";
+
+    private static String GetTokenUrl = ServerUrl + "umbrellapp/getToken.php";
+
+    private static String GetMyUmbrellasUrl = ServerUrl + "umbrellapp/getMyUmbrellas.php";
 
     private static final float PrezzoAlMinuto = 0.07f;
 
@@ -53,9 +57,8 @@ public class Utils {
     {
         Date sdDate = sd.getTime();
         Date fdDate = Calendar.getInstance().getTime();
-        Log.i(TAG, "sdDate e fdDate " + sdDate.toString() + " " + fdDate.toString());
-        long diffInMillis = (fdDate.getTime()-sdDate.getTime())/1000;
-        long diff = TimeUnit.MINUTES.convert(diffInMillis,TimeUnit.MILLISECONDS);
+        long diffInSecs = (fdDate.getTime()-sdDate.getTime())/1000;
+        long diff = TimeUnit.MINUTES.convert(diffInSecs,TimeUnit.SECONDS);
 
         return diff * PrezzoAlMinuto;
     }
@@ -141,6 +144,26 @@ public class Utils {
             } catch (IOException e) {
                 return false;
             }
+    }
+
+    public static String[] GetMyUmbrellas()
+    {
+        final OkHttpClient client = new OkHttpClient();
+
+        RequestBody formBody = new FormBody.Builder()
+                .add("token", Token)
+                .build();
+
+        Request request = new Request.Builder()
+                .url(GetMyUmbrellasUrl)
+                .post(formBody)
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            return response.body().string().split(";");
+        } catch (IOException e) {
+            return new String[]{};
+        }
     }
 
     public static boolean isConnectedToThisServer(String url, int timeout) {

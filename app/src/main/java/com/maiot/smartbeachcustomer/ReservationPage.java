@@ -54,7 +54,7 @@ public class ReservationPage extends AppCompatActivity {
         ParseNfcMessage(getIntent());
 
         Thread SetViewsText = new Thread(() -> {
-            if (Utils.isConnectedToThisServer(Utils.ServerUrl, 1000)) {
+            if (Utils.isConnectedToThisServer(Utils.ServerUrl, Utils.Timeout)) {
                 SetRemoteTokenAndDate();
                 runOnUiThread(this::SetViewsTextMethod);
             } else {
@@ -76,15 +76,21 @@ public class ReservationPage extends AppCompatActivity {
         if(b.getText().toString().equals(free))
         {
             Thread thr = new Thread(() -> {
-                if(Utils.isConnectedToThisServer(Utils.ServerUrl,1000))
+                if(Utils.isConnectedToThisServer(Utils.ServerUrl,Utils.Timeout))
                 {
                     Log.i(TAG, "inizio pren " + inizioprenotazione.getTime().toString());
-                    Utils.AssignToken(uid, Utils.getToken(), sdfDisplay.format(inizioprenotazione.getTime()), getApplicationContext());
+                    if(Utils.AssignToken(uid,
+                            Utils.getToken(),
+                            sdfDisplay.format(inizioprenotazione.getTime()),
+                            getApplicationContext()))
+                        runOnUiThread(() -> Toast.makeText(this,"Ombrellone prenotato!",Toast.LENGTH_LONG).show());
+                    else
+                        runOnUiThread(() -> Toast.makeText(this,"Problema nella prenotazione.",Toast.LENGTH_LONG).show());
                     startActivity(new Intent(ReservationPage.this,MainActivity.class));
                 }
                 else
                 {
-                    Toast.makeText(getApplicationContext(),"Problema di connessione",Toast.LENGTH_LONG).show();
+                    runOnUiThread(() -> Toast.makeText(this,"Problema di connessione.",Toast.LENGTH_LONG).show());
                 }
             });
             thr.start();
@@ -92,14 +98,17 @@ public class ReservationPage extends AppCompatActivity {
         else if(b.getText().toString().equals(occupied))
         {
             Thread thr = new Thread(() -> {
-                if(Utils.isConnectedToThisServer(Utils.ServerUrl,1000))
+                if(Utils.isConnectedToThisServer(Utils.ServerUrl,Utils.Timeout))
                 {
-                    Utils.AssignToken(uid, "null", "null", getApplicationContext());
+                    if(Utils.AssignToken(uid, "null", "null", getApplicationContext()))
+                        runOnUiThread(() -> Toast.makeText(this,"Ombrellone liberato!",Toast.LENGTH_LONG).show());
+                    else
+                        runOnUiThread(() -> Toast.makeText(this,"Problema nella liberazione.",Toast.LENGTH_LONG).show());
                     startActivity(new Intent(ReservationPage.this,MainActivity.class));
                 }
                 else
                 {
-                    Toast.makeText(getApplicationContext(),"Problema di connessione",Toast.LENGTH_LONG).show();
+                    runOnUiThread(() -> Toast.makeText(this,"Problema di connessione.",Toast.LENGTH_LONG).show());
                 }
             });
             thr.start();
@@ -128,6 +137,11 @@ public class ReservationPage extends AppCompatActivity {
             if (t[1] != null){
                 Log.i(TAG,"T1 " + t[1]);
                 inizioprenotazione.setTime(sdfDisplay.parse(t[1]));
+                //Questo lo facciamo perchè si suppone che tutti gli ombrelloni vengano prenotati
+                //e liberati lo stesso giorno.
+                inizioprenotazione.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR));
+                inizioprenotazione.set(Calendar.MONTH, Calendar.getInstance().get(Calendar.MONTH));
+                inizioprenotazione.set(Calendar.DAY_OF_MONTH, Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
             }
 
             else
