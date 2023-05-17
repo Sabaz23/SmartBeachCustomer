@@ -56,15 +56,8 @@ public class MainActivity extends AppCompatActivity {
                 + "/" + getString(R.string.TOKEN_FILENAME);
 
         File tokenFile = new File(tokenPath);
-        try {
-            if (tokenFile.exists())
-                Utils.LoadToken(tokenFile, getApplicationContext());
-            else
-                Utils.GenerateToken(tokenFile, getApplicationContext());
-        }catch(IOException e)
-        {
-            Log.e(TAG, "Problema nell'apertura del file");
-        }
+
+        Utils.CreateOrLoadToken(tokenFile,getApplicationContext());
 
         tvumbrellainfo = findViewById(R.id.ombrellainfo);
         tvumbrellanum = findViewById(R.id.tvumbrellaNum);
@@ -102,9 +95,9 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("SetTextI18n")
     void SetViews() throws ParseException {
         String[] currentUmbrellaDisplaying = MyUmbrellas[CurrentDisplaying].split(" ");
-        tvumbrellainfo.setText(getString(R.string.TITLE_HOME_OCCUPIED));
-        tvumbrellanum.setText(getString(R.string.OMBRELLONE) + currentUmbrellaDisplaying[0]);
-        tviniziopren.setText(getString(R.string.INIZIOPRENOTAZIONE) + currentUmbrellaDisplaying[1]);
+        tvumbrellainfo.setText("ℹ️ "+getString(R.string.TITLE_HOME_OCCUPIED) +" ℹ️ ");
+        tvumbrellanum.setText("\uD83C\uDFD6️ "+ getString(R.string.OMBRELLONE) + " " + currentUmbrellaDisplaying[0]);
+        tviniziopren.setText("\uD83D\uDD51 " + getString(R.string.INIZIOPRENOTAZIONE) + " " + currentUmbrellaDisplaying[1]);
         StartCalendar.setTime(sdfDisplay.parse(currentUmbrellaDisplaying[1]));
         StartCalendar.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR));
         StartCalendar.set(Calendar.MONTH, Calendar.getInstance().get(Calendar.MONTH));
@@ -130,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
 
     @SuppressLint("SetTextI18n")
     Runnable updatePrezzoRunnable = () -> {
-            runOnUiThread(() -> tvprezzodapagare.setText(getString(R.string.PREZZODAPAGARE) + Utils.getPrezzoDaPagare(StartCalendar) + "€"));
+            runOnUiThread(() -> tvprezzodapagare.setText("\uD83D\uDCB0 " + getString(R.string.PREZZODAPAGARE) + " " + Utils.getPrezzoDaPagare(StartCalendar) + "€"));
             Log.i(TAG, "Aggiorno il prezzo da pagare....");
     };
 

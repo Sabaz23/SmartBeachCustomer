@@ -41,7 +41,7 @@ public class Utils {
 
     private static final String TAG = "Utils";
 
-    public static String ServerUrl = "http://192.168.1.5/";
+    public static String ServerUrl = "http://192.168.114.92/";
 
     public static final int Timeout = 5000;
 
@@ -201,5 +201,21 @@ public class Utils {
     public static String getToken() {
         return Token;
     }
+
+    public static void CreateOrLoadToken(File tokenFile, Context ctx)
+    {
+        try {
+            if (tokenFile.exists())
+                Utils.LoadToken(tokenFile, ctx);
+            else
+                Utils.GenerateToken(tokenFile, ctx);
+        }catch(IOException e)
+        {
+            Log.e(TAG, "Problema nell'apertura del file");
+        }
+    }
+
 }
+
+
 

@@ -42,6 +42,14 @@ public class ReservationPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reservation_page);
+
+        String tokenPath = getApplicationContext().getFilesDir().getPath().toString()
+                + "/" + getString(R.string.TOKEN_FILENAME);
+
+        File tokenFile = new File(tokenPath);
+
+        Utils.CreateOrLoadToken(tokenFile,getApplicationContext());
+
         tvtitle = findViewById(R.id.tvtitolo);
         tvombrellone = findViewById(R.id.tvombrellone);
         tvprezzo = findViewById(R.id.tvprezzo);
