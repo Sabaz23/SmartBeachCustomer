@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ReservationPage">
+    tools:context=".ReservationPage"
+    android:background="@drawable/backgroundm2">
 
     <TextView
         android:id="@+id/tvtitolo"
@@ -24,6 +25,8 @@
         android:textAlignment="center"
         android:textSize="17dp"
         android:layout_marginTop="5dp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
 
         />
     <TextView
@@ -34,6 +37,8 @@
         android:textAlignment="center"
         android:layout_marginTop="20dp"
         android:textSize="17dp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
         />
 
     <TextView
@@ -44,6 +49,8 @@
         android:textAlignment="center"
         android:layout_marginTop="20dp"
         android:textSize="17dp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
         />
 
     <TextView
@@ -54,6 +61,8 @@
         android:textAlignment="center"
         android:layout_marginTop="20dp"
         android:textSize="17dp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
         />
 
     <Button
@@ -61,7 +70,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="20dp"
+        android:textColor="@color/white"/>
 
 
 

@@ -41,7 +41,7 @@ public class Utils {
 
     private static final String TAG = "Utils";
 
-    public static String ServerUrl = "http://192.168.114.92/";
+    public static String ServerUrl = "http://192.168.1.118/";
 
     public static final int Timeout = 5000;
 
