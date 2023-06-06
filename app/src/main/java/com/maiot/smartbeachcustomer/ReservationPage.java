@@ -12,6 +12,7 @@ import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,7 +34,8 @@ public class ReservationPage extends AppCompatActivity {
 
     private Calendar inizioprenotazione = Calendar.getInstance();
 
-    private TextView tvtitle, tvprezzo, tvombrellone, tvinizioprenotazione;
+    private TextView tvtitle, tvprezzo, tvombrellone, tvinizioprenotazione, tvsottotitolo;
+    private ImageView IvNoconnection, IvOccupied;
 
     private String RemoteToken = null;
     private final SimpleDateFormat sdfDisplay = new SimpleDateFormat("HH:mm:ss", Locale.ITALIAN);
@@ -54,7 +56,9 @@ public class ReservationPage extends AppCompatActivity {
         tvombrellone = findViewById(R.id.tvombrellone);
         tvprezzo = findViewById(R.id.tvprezzo);
         tvinizioprenotazione = findViewById(R.id.tvdatainizioprenotazione);
-
+        tvsottotitolo = findViewById(R.id.tvsottotitolo);
+        IvNoconnection = findViewById(R.id.ivnoconnection);
+        IvOccupied = findViewById(R.id.ivoccupato);
 
         bttok = findViewById(R.id.bttok);
 
@@ -87,7 +91,6 @@ public class ReservationPage extends AppCompatActivity {
             Thread thr = new Thread(() -> {
                 if(Utils.isConnectedToThisServer(Utils.ServerUrl,Utils.Timeout))
                 {
-                    Log.i(TAG, "inizio pren " + inizioprenotazione.getTime().toString());
                     if(Utils.AssignToken(uid,
                             Utils.getToken(),
                             sdfDisplay.format(inizioprenotazione.getTime()),
@@ -95,7 +98,9 @@ public class ReservationPage extends AppCompatActivity {
                         runOnUiThread(() -> Toast.makeText(this,"Ombrellone prenotato!",Toast.LENGTH_LONG).show());
                     else
                         runOnUiThread(() -> Toast.makeText(this,"Problema nella prenotazione.",Toast.LENGTH_LONG).show());
-                    startActivity(new Intent(ReservationPage.this,MainActivity.class));
+                    Intent i = new Intent(ReservationPage.this,MainActivity.class);
+                    finish();
+                    startActivity(i);
                 }
                 else
                 {
@@ -113,7 +118,9 @@ public class ReservationPage extends AppCompatActivity {
                         runOnUiThread(() -> Toast.makeText(this,"Ombrellone liberato!",Toast.LENGTH_LONG).show());
                     else
                         runOnUiThread(() -> Toast.makeText(this,"Problema nella liberazione.",Toast.LENGTH_LONG).show());
-                    startActivity(new Intent(ReservationPage.this,MainActivity.class));
+                    Intent i = new Intent(ReservationPage.this,MainActivity.class);
+                    finish();
+                    startActivity(i);
                 }
                 else
                 {
@@ -180,6 +187,8 @@ public class ReservationPage extends AppCompatActivity {
             } else //Se il token dell'ombrellone scannerizzato NON è il mio
             {
                 tvtitle.setText(getString(R.string.TITLE_WRONG));
+                IvOccupied.setVisibility(View.VISIBLE);
+                DisableAllInfos();
                 tvtitle.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.red));
                 bttok.setText(getString(R.string.BUTTON_WRONG));
             }
@@ -199,7 +208,17 @@ public class ReservationPage extends AppCompatActivity {
     {
         tvtitle.setText(getString(R.string.TITLE_NOCONN));
         tvtitle.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.red));
+        IvNoconnection.setVisibility(View.VISIBLE);
+        DisableAllInfos();
         bttok.setText(getString(R.string.BUTTON_WRONG));
+    }
+
+    private void DisableAllInfos()
+    {
+        tvsottotitolo.setVisibility(View.GONE);
+        tvombrellone.setVisibility(View.GONE);
+        tvinizioprenotazione.setVisibility(View.GONE);
+        tvprezzo.setVisibility(View.GONE);
     }
 
 }

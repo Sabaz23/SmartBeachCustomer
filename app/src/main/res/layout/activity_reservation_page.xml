@@ -18,7 +18,28 @@
         android:layout_marginTop="20dp"
         android:textColor="@color/teal_700"
         />
+
+    <ImageView
+        android:id="@+id/ivnoconnection"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:layout_marginTop="25dp"
+        android:src="@drawable/networksignal"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        />
+    <ImageView
+        android:id="@+id/ivoccupato"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:layout_marginTop="25dp"
+        android:src="@drawable/signboard"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        />
+
     <TextView
+        android:id="@+id/tvsottotitolo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Dati sull'ombrellone:"

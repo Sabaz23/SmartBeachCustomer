@@ -11,6 +11,7 @@ import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
     public final String TAG = "MainActivity";
     private TextView tvumbrellainfo, tvumbrellanum, tviniziopren, tvprezzodapagare;
+    private ImageView ivnfc;
     private Button bttnext;
     private int uid = 0;
 
@@ -63,13 +65,24 @@ public class MainActivity extends AppCompatActivity {
         tvumbrellanum = findViewById(R.id.tvumbrellaNum);
         tviniziopren = findViewById(R.id.tvinizioPren);
         tvprezzodapagare = findViewById(R.id.tvprezzoDaPagare);
+        ivnfc = findViewById(R.id.ivnfc);
         bttnext = findViewById(R.id.bttnext);
         bttnext.setOnClickListener(bttnextlistener);
 
+        Thread thr = new Thread(this::SetViewRunnable);
+        thr.start();
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Thread thr = new Thread(this::SetViewRunnable);
+        thr.start();
+    }
 
-        Thread thr = new Thread(() -> {
-            if(Utils.isConnectedToThisServer(Utils.ServerUrl,Utils.Timeout)) {
+    void SetViewRunnable()
+    {
+        if(Utils.isConnectedToThisServer(Utils.ServerUrl,Utils.Timeout)) {
                 MyUmbrellas = Utils.GetMyUmbrellas();
                 if(MyUmbrellas.length != 1){
                     runOnUiThread(() -> {
@@ -82,15 +95,13 @@ public class MainActivity extends AppCompatActivity {
                 }else
                     runOnUiThread(() -> {
                         tvumbrellainfo.setText(R.string.TITLE_HOME_FREE);
+                        ivnfc.setVisibility(View.VISIBLE);
                         bttnext.setEnabled(false);
                         bttnext.setVisibility(View.GONE);
                     });
-            }else
-            {
-                runOnUiThread(() -> Toast.makeText(this,"Problema di connessione", Toast.LENGTH_LONG).show());
-            }
-        });
-        thr.start();
+            }else {
+            runOnUiThread(() -> Toast.makeText(this, "Problema di connessione", Toast.LENGTH_LONG).show());
+        }
     }
 
     @SuppressLint("SetTextI18n")

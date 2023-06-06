@@ -34,6 +34,16 @@
         android:textColor="@color/black"
         />
 
+    <ImageView
+        android:id="@+id/ivnfc"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:layout_marginTop="25dp"
+        android:src="@drawable/nfc"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        />
+
     <TextView
         android:id="@+id/tvumbrellaNum"
         android:layout_width="wrap_content"
