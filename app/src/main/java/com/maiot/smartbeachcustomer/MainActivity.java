@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
                     runOnUiThread(() -> {
                         tvumbrellainfo.setText(R.string.TITLE_HOME_FREE);
                         bttnext.setEnabled(false);
+                        bttnext.setVisibility(View.GONE);
                     });
             }else
             {
@@ -104,8 +105,16 @@ public class MainActivity extends AppCompatActivity {
         StartCalendar.set(Calendar.DAY_OF_MONTH, Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
         executor = Executors.newScheduledThreadPool(1);
         executor.scheduleAtFixedRate(updatePrezzoRunnable,0,1, TimeUnit.MINUTES);
-        if(MyUmbrellas.length == 2) bttnext.setEnabled(false);
-        else bttnext.setEnabled(true);
+        if(MyUmbrellas.length == 2)
+        {
+            bttnext.setVisibility(View.GONE);
+            bttnext.setEnabled(false);
+        }
+        else
+        {
+            bttnext.setVisibility(View.VISIBLE);
+            bttnext.setEnabled(true);
+        }
     }
 
     private final View.OnClickListener bttnextlistener = view -> {

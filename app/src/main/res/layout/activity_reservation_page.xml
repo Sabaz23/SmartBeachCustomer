@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".ReservationPage"
-    android:background="@drawable/backgroundm2">
+    android:background="@drawable/gradientbg">
 
     <TextView
         android:id="@+id/tvtitolo"
@@ -16,7 +16,7 @@
         android:textAlignment="center"
         android:textSize="25dp"
         android:layout_marginTop="20dp"
-        android:textColor="@color/purple_200"
+        android:textColor="@color/teal_700"
         />
     <TextView
         android:layout_width="match_parent"
