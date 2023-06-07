@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
     public final String TAG = "MainActivity";
     private TextView tvumbrellainfo, tvumbrellanum, tviniziopren, tvprezzodapagare;
-    private ImageView ivnfc;
+    private ImageView ivnfc, ivfailedconn;
     private Button bttnext;
     private int uid = 0;
 
@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         tviniziopren = findViewById(R.id.tvinizioPren);
         tvprezzodapagare = findViewById(R.id.tvprezzoDaPagare);
         ivnfc = findViewById(R.id.ivnfc);
+        ivfailedconn = findViewById(R.id.ivFailedConnection);
         bttnext = findViewById(R.id.bttnext);
         bttnext.setOnClickListener(bttnextlistener);
 
@@ -83,27 +84,35 @@ public class MainActivity extends AppCompatActivity {
     void SetViewRunnable()
     {
         if(Utils.isConnectedToThisServer(Utils.ServerUrl,Utils.Timeout)) {
-                MyUmbrellas = Utils.GetMyUmbrellas();
-                if(MyUmbrellas.length != 1){
-                    runOnUiThread(() -> {
-                        try {
-                            SetViews();
-                        } catch (ParseException e) {
-                            Log.e(TAG,"Problema nel parsing della data: " + e.getMessage());
-                        }
-                    });
-                }else
-                    runOnUiThread(() -> {
-                        tvumbrellainfo.setText(R.string.TITLE_HOME_FREE);
-                        ivnfc.setVisibility(View.VISIBLE);
-                        tvumbrellanum.setVisibility(View.GONE);
-                        tviniziopren.setVisibility(View.GONE);
-                        tvprezzodapagare.setVisibility(View.GONE);
-                        bttnext.setEnabled(false);
-                        bttnext.setVisibility(View.GONE);
-                    });
-            }else {
-            runOnUiThread(() -> Toast.makeText(this, "Problema di connessione", Toast.LENGTH_LONG).show());
+            MyUmbrellas = Utils.GetMyUmbrellas();
+            if(MyUmbrellas.length != 1){
+                runOnUiThread(() -> {
+                    try {
+                        SetViews();
+                    } catch (ParseException e) {
+                        Log.e(TAG,"Problema nel parsing della data: " + e.getMessage());
+                    }
+                });
+            }else
+                runOnUiThread(() -> {
+                    tvumbrellainfo.setText(R.string.TITLE_HOME_FREE);
+                    ivnfc.setVisibility(View.VISIBLE);
+                    ivfailedconn.setVisibility(View.GONE);
+                    tvumbrellanum.setVisibility(View.GONE);
+                    tviniziopren.setVisibility(View.GONE);
+                    tvprezzodapagare.setVisibility(View.GONE);
+                    bttnext.setEnabled(false);
+                    bttnext.setVisibility(View.GONE);
+                });
+        }else {
+        runOnUiThread(() -> {
+            tvumbrellainfo.setText(R.string.TITLE_HOME_NOCONN);
+            ivfailedconn.setVisibility(View.VISIBLE);
+            ivnfc.setVisibility(View.GONE);
+            bttnext.setEnabled(false);
+            bttnext.setVisibility(View.GONE);
+            Toast.makeText(this, "Problema di connessione", Toast.LENGTH_LONG).show();
+        });
         }
     }
 
