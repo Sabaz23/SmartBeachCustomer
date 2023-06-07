@@ -96,6 +96,9 @@ public class MainActivity extends AppCompatActivity {
                     runOnUiThread(() -> {
                         tvumbrellainfo.setText(R.string.TITLE_HOME_FREE);
                         ivnfc.setVisibility(View.VISIBLE);
+                        tvumbrellanum.setVisibility(View.GONE);
+                        tviniziopren.setVisibility(View.GONE);
+                        tvprezzodapagare.setVisibility(View.GONE);
                         bttnext.setEnabled(false);
                         bttnext.setVisibility(View.GONE);
                     });
@@ -107,6 +110,8 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("SetTextI18n")
     void SetViews() throws ParseException {
         String[] currentUmbrellaDisplaying = MyUmbrellas[CurrentDisplaying].split(" ");
+        tviniziopren.setVisibility(View.VISIBLE);
+        tvprezzodapagare.setVisibility(View.VISIBLE);
         tvumbrellainfo.setText("ℹ️ "+getString(R.string.TITLE_HOME_OCCUPIED) +" ℹ️ ");
         tvumbrellanum.setText("\uD83C\uDFD6️ "+ getString(R.string.OMBRELLONE) + " " + currentUmbrellaDisplaying[0]);
         tviniziopren.setText("\uD83D\uDD51 " + getString(R.string.INIZIOPRENOTAZIONE) + " " + currentUmbrellaDisplaying[1]);
